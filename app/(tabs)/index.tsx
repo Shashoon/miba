@@ -29,6 +29,7 @@ export async function SignUp({
   phone_number,
 }: SignUpParameters) {
   try {
+    console.log("1-1-1", username, email);
     const { user } = await Auth.signUp({
       username,
       password,
