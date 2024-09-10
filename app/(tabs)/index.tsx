@@ -37,10 +37,8 @@ export async function SignUp({
         email, // optional
         phone_number, // optional - E.164 number convention
       },
-      autoSignIn: {
-        enabled: true, // optional - enables auto sign-in after user is confirmed
-      },
     });
+    console.log("user", user);
     Alert.alert("Success", "User signed up successfully");
   } catch (error) {
     console.log("Error signing up:", error);
@@ -94,6 +92,7 @@ export default function HomeScreen() {
 
   const handleSignOut = () => {
     console.log("c");
+    setUsername("LOGOUTTT");
     SignOut(setLoggedInUser); // Pass setUser to clear the signed-in user state
   };
 
@@ -158,7 +157,7 @@ export default function HomeScreen() {
           <ThemedText type="defaultSemiBold">{username} is log in</ThemedText>{" "}
           <ThemedText type="defaultSemiBold">
             {Platform.select({ ios: "cmd + d", android: "cmd + m" })}
-          </ThemedText>{" "}
+          </ThemedText>
           to open developer tools.
         </ThemedText>
       </ThemedView>
