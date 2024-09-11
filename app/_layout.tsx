@@ -12,6 +12,7 @@ import {
   ThemeProvider,
 } from "@react-navigation/native";
 import awsconfig from "../src/aws-exports";
+import { PaperProvider } from "react-native-paper";
 
 Amplify.configure(awsconfig);
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -34,12 +35,14 @@ export default function RootLayout() {
   }
 
   return (
-    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(home)" options={{ headerShown: false }} />
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-    </ThemeProvider>
+    <PaperProvider>
+      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+        <Stack initialRouteName="(login)">
+          <Stack.Screen name="(login)" options={{ headerShown: false }} />
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="+not-found" />
+        </Stack>
+      </ThemeProvider>
+    </PaperProvider>
   );
 }
