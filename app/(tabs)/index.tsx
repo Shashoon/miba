@@ -6,6 +6,7 @@ import {
   useSignInMutation,
   useSignOutMutation,
 } from "@/src/redux/features/authApi";
+import { setUser } from "@/src/redux/features/authSlice";
 import { useAppSelector } from "@/src/redux/store";
 
 export default function HomeScreen() {
@@ -23,11 +24,12 @@ export default function HomeScreen() {
   const [signOut, { isLoading: isSignOutLoading }] = useSignOutMutation();
 
   const handleSignIn = () => {
-    signIn({ username, password }).unwrap();
+    //here signIn({ username, password }).unwrap();
   };
 
-  const handleSignOut = async () => {
-    await signOut({}).unwrap();
+  const handleSignOut = () => {
+    signOut({}).unwrap();
+    //here dispatch(setUser(userData));
   };
 
   return (

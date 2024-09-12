@@ -2,7 +2,7 @@ import { Hub } from "aws-amplify";
 import { TypedUseSelectorHook, useSelector } from "react-redux";
 
 import { authApi } from "./features/authApi";
-import authSlice from "./features/authSlice";
+import authSlice from "./features/authS";
 import { configureStore } from "@reduxjs/toolkit";
 
 export const store = configureStore({
