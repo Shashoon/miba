@@ -1,18 +1,14 @@
 import React, { useState } from "react";
 import { Auth } from "aws-amplify";
-import {
-  Image,
-  StyleSheet,
-  Platform,
-  TextInput,
-  Button,
-  Alert,
-} from "react-native";
+import { Image, StyleSheet, Platform, TextInput, Alert } from "react-native";
+import { Button } from "react-native-paper";
+import { useDispatch } from "react-redux";
 
 import { HelloWave } from "@/components/HelloWave";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
+import { signIn, signOut } from "@/src/redux/features/authSlice";
 
 type SignUpParameters = {
   username: string;
@@ -22,78 +18,66 @@ type SignUpParameters = {
 };
 
 // SignUp function for AWS Amplify
-export async function SignUp({
-  username,
-  password,
-  email,
-  phone_number,
-}: SignUpParameters) {
-  try {
-    console.log("1-1-1", username, email);
-    const { user } = await Auth.signUp({
-      username,
-      password,
-      attributes: {
-        email, // optional
-        phone_number, // optional - E.164 number convention
-      },
-    });
-    console.log("user", user);
-    Alert.alert("Success", "User signed up successfully");
-  } catch (error) {
-    console.log("Error signing up:", error);
-    Alert.alert("Error", "Failed to sign up: " + error);
-  }
-}
+// export async function SignUp(
+//   { username, password, email, phone_number }: SignUpParameters,
+//   dispatch: any // Pass the dispatch function to call login action
+// ) {
+//   try {
+//     console.log("1-1-1", username, email);
+//     const { user } = await Auth.signUp({
+//       username,
+//       password,
+//       attributes: {
+//         email, // optional
+//         phone_number, // optional - E.164 number convention
+//       },
+//     });
 
-// SignIn function for AWS Amplify
-export async function SignIn(
-  username: string,
-  password: string,
-  setUser: (username: string | null) => void
-) {
-  try {
-    const user = await Auth.signIn(username, password);
-    console.log("Signed in user:", user);
-    setUser(username); // Set the signed-in user
-    Alert.alert("Success", `User ${username} signed in successfully`);
-  } catch (error) {
-    console.log("Error signing in:", error);
-    Alert.alert("Error", "Failed to sign in: " + error);
-  }
-}
+//     const userDataKey = user?.username;
+//     console.log("user", user);
+//     Alert.alert("Success", "User signed up successfully");
 
-// SignOut function for AWS Amplify
-export async function SignOut(setUser: (username: string | null) => void) {
-  try {
-    await Auth.signOut();
-    setUser(null); // Reset the user state on sign-out
-    Alert.alert("Success", "User signed out successfully");
-  } catch (error) {
-    console.log("Error signing out:", error);
-    Alert.alert("Error", "Failed to sign out: " + error);
-  }
-}
+//     dispatch(signIn({ username, userDataKey })); // Dispatch login action with both username and userDataKey
+//   } catch (error) {
+//     console.log("Error signing up:", error);
+//     Alert.alert("Error", "Failed to sign up: " + error);
+//   }
+// }
 
 export default function HomeScreen() {
+  const dispatch = useDispatch(); // Create dispatch hook for Redux actions
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [loggedInUser, setLoggedInUser] = useState<string | null>(null); // Track signed-in user
 
-  const handleSignUp = () => {
-    SignUp({ username, password, email, phone_number: phoneNumber });
+  // const handleSignUp = () => {
+  //   SignUp({ username, password, email, phone_number: phoneNumber }, dispatch);
+  // };
+
+  const handleSignIn = async () => {
+    try {
+      const user = await Auth.signIn(username, password);
+      console.log("Signed in user:", user);
+      dispatch(
+        signIn({ username: user.username, userDataKey: user.userDataKey })
+      );
+      Alert.alert("Success", `User ${username} signed in successfully`);
+    } catch (error) {
+      console.log("Error signing in:", error);
+      Alert.alert("Error", "Failed to sign in: " + error);
+    }
   };
 
-  const handleSignIn = () => {
-    SignIn(username, password, setLoggedInUser); // Pass setUser to update the signed-in user state
-  };
-
-  const handleSignOut = () => {
-    console.log("c");
-    setUsername("LOGOUTTT");
-    SignOut(setLoggedInUser); // Pass setUser to clear the signed-in user state
+  const handleSignOut = async () => {
+    try {
+      await Auth.signOut();
+      dispatch(signOut()); // Dispatch logout action
+      Alert.alert("Success", "User signed out successfully");
+    } catch (error) {
+      console.log("Error signing out:", error);
+      Alert.alert("Error", "Failed to sign out: " + error);
+    }
   };
 
   return (
@@ -112,9 +96,9 @@ export default function HomeScreen() {
       </ThemedView>
 
       {/* Show login status */}
-      {loggedInUser && (
+      {username && (
         <ThemedView style={styles.loginStatus}>
-          <ThemedText>User {loggedInUser} is logged in!</ThemedText>
+          <ThemedText>User {username} is logged in!</ThemedText>
         </ThemedView>
       )}
 
@@ -145,9 +129,11 @@ export default function HomeScreen() {
           value={phoneNumber}
           onChangeText={setPhoneNumber}
         />
-        <Button title="Sign Up" onPress={handleSignUp} />
-        <Button title="Sign In" onPress={handleSignIn} />
-        <Button title="Sign Out" onPress={handleSignOut} />
+        <Button onPress={handleSignIn}>SIGN up</Button>
+        <Button icon="camera" mode="outlined" onPress={handleSignIn}>
+          login
+        </Button>
+        <Button onPress={handleSignOut}>Logout</Button>
       </ThemedView>
 
       {/* Other Content */}
