@@ -1,5 +1,5 @@
-import {Auth} from "aws-amplify";
-import {Alert} from "react-native";
+import { Auth } from "aws-amplify";
+import { Alert } from "react-native";
 
 export class AuthService {
   constructor() {}
@@ -13,7 +13,7 @@ export class AuthService {
   ) {
     try {
       console.log("1-1-1", username, email);
-      const {user} = await Auth.signUp({
+      const { user } = await Auth.signUp({
         username,
         password,
         attributes: {

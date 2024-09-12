@@ -1,15 +1,16 @@
-import {AuthService} from "@/services/authService";
-import {CognitoUser} from "amazon-cognito-identity-js";
-import {useRouter} from "expo-router";
-import React, {useState} from "react";
-import {Pressable, StyleSheet, View} from "react-native";
-import {Button, Text, TextInput} from "react-native-paper";
+import { AuthService } from "@/services/authService";
+import { CognitoUser } from "amazon-cognito-identity-js";
+import { useRouter } from "expo-router";
+import React, { useState } from "react";
+import { Pressable, StyleSheet, View } from "react-native";
+import { Button, Text, TextInput, useTheme } from "react-native-paper";
 
 export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
   const router = useRouter();
+  const theme = useTheme();
+
   const authService = new AuthService();
 
   const handleSignIn = () => {

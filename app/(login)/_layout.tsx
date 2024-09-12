@@ -1,7 +1,9 @@
-import {Tabs} from "expo-router";
+import { Tabs } from "expo-router";
 import React from "react";
+import { useTheme } from "react-native-paper";
 
 const LoginLayout = () => {
+  const theme = useTheme();
   return (
     <Tabs
       screenOptions={{
@@ -9,10 +11,8 @@ const LoginLayout = () => {
         headerTitleStyle: {
           fontSize: 24,
         },
-        headerStyle: {
-          backgroundColor: "transparent",
-        },
-        tabBarStyle: {display: "none"},
+        headerStyle: {},
+        tabBarStyle: { display: "none" },
       }}
     >
       <Tabs.Screen
