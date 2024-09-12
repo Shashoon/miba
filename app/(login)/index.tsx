@@ -1,37 +1,66 @@
-import React from "react";
-import { StyleSheet, Text, View } from "react-native";
-import { TextInput } from "react-native-paper";
-import { Auth } from "aws-amplify";
+import {AuthService} from "@/services/authService";
+import {CognitoUser} from "amazon-cognito-identity-js";
+import {useRouter} from "expo-router";
+import React, {useState} from "react";
+import {Pressable, StyleSheet, View} from "react-native";
+import {Button, Text, TextInput} from "react-native-paper";
 
 export default function Login() {
-  const onChange = () => {};
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  const router = useRouter();
+  const authService = new AuthService();
+
+  const handleSignIn = () => {
+    authService.SignIn(username, password).then((res: CognitoUser) => {
+      console.log("user signed in - ", res.getUsername());
+      router.navigate("/(tabs)");
+    });
+  };
 
   return (
     <View style={styles.pageContainer}>
-      <Text>login</Text>
-
       <View style={styles.formContainer}>
         <TextInput
-          label="Email"
-          secureTextEntry
-          right={<TextInput.Icon icon="email" />}
+          label="Username"
+          value={username}
+          right={<TextInput.Icon icon="account" color={"rgb(202, 196, 208)"} />}
           style={styles.primaryInput}
-          underlineColor="transparent"
-          activeUnderlineColor="gray"
           textColor="#1a181b"
+          placeholderTextColor={"rgb(202, 196, 208)"}
           underlineStyle={styles.inputUnderline}
-          onChangeText={onChange}
+          onChangeText={setUsername}
         />
         <TextInput
           label="Password"
+          value={password}
           secureTextEntry
-          right={<TextInput.Icon icon="eye" />}
+          right={<TextInput.Icon icon="key" color={"rgb(202, 196, 208)"} />}
           style={styles.primaryInput}
-          underlineColor="transparent"
-          activeUnderlineColor="gray"
           textColor="#1a181b"
+          placeholderTextColor={"rgb(202, 196, 208)"}
           underlineStyle={styles.inputUnderline}
+          onChangeText={setPassword}
         />
+
+        <View style={styles.messageContainer}>
+          <Button mode="contained-tonal" onPress={handleSignIn}>
+            Sign In
+          </Button>
+
+          <View style={styles.messageLabel}>
+            <Text>Don`t have account ? </Text>
+            <Pressable>
+              <Text
+                style={styles.clickableText}
+                onPress={() => router.navigate("/(login)/signup")}
+              >
+                Click here
+              </Text>
+            </Pressable>
+          </View>
+        </View>
       </View>
     </View>
   );
@@ -41,22 +70,32 @@ const styles = StyleSheet.create({
   pageContainer: {
     flex: 1,
     alignItems: "center",
+    justifyContent: "center",
+    gap: 30,
   },
   formContainer: {
     display: "flex",
     width: "80%",
-    gap: 10,
-  },
-  headerImage: {
-    color: "#808080",
-    bottom: -90,
-    left: -35,
-    position: "absolute",
+    gap: 15,
   },
   primaryInput: {
     backgroundColor: "white",
+    borderRadius: 15,
+    borderTopStartRadius: 15,
+    borderTopEndRadius: 15,
   },
   inputUnderline: {
-    height: 0.5,
+    display: "none",
+  },
+  messageContainer: {
+    alignItems: "center",
+    gap: 10,
+  },
+  messageLabel: {
+    display: "flex",
+    flexDirection: "row",
+  },
+  clickableText: {
+    color: "rgb(142 130 172)",
   },
 });

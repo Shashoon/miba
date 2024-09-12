@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Auth } from "aws-amplify";
+import React, {useState} from "react";
+import {Auth} from "aws-amplify";
 import {
   Image,
   StyleSheet,
@@ -9,10 +9,11 @@ import {
   Alert,
 } from "react-native";
 
-import { HelloWave } from "@/components/HelloWave";
+import {HelloWave} from "@/components/HelloWave";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
-import { ThemedText } from "@/components/ThemedText";
-import { ThemedView } from "@/components/ThemedView";
+import {ThemedText} from "@/components/ThemedText";
+import {ThemedView} from "@/components/ThemedView";
+import {AuthService} from "@/services/authService";
 
 type SignUpParameters = {
   username: string;
@@ -30,7 +31,7 @@ export async function SignUp({
 }: SignUpParameters) {
   try {
     console.log("1-1-1", username, email);
-    const { user } = await Auth.signUp({
+    const {user} = await Auth.signUp({
       username,
       password,
       attributes: {
@@ -82,23 +83,26 @@ export default function HomeScreen() {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [loggedInUser, setLoggedInUser] = useState<string | null>(null); // Track signed-in user
 
+  const authService = new AuthService();
+
   const handleSignUp = () => {
-    SignUp({ username, password, email, phone_number: phoneNumber });
+    // SignUp({ username, password, email, phone_number: phoneNumber });
+    authService.SignUp(username, password, email, phoneNumber);
   };
 
   const handleSignIn = () => {
-    SignIn(username, password, setLoggedInUser); // Pass setUser to update the signed-in user state
+    authService.SignIn(username, password, setLoggedInUser); // Pass setUser to update the signed-in user state
   };
 
   const handleSignOut = () => {
     console.log("c");
     setUsername("LOGOUTTT");
-    SignOut(setLoggedInUser); // Pass setUser to clear the signed-in user state
+    authService.SignOut(setLoggedInUser); // Pass setUser to clear the signed-in user state
   };
 
   return (
     <ParallaxScrollView
-      headerBackgroundColor={{ light: "#A1CEDC", dark: "#1D3D47" }}
+      headerBackgroundColor={{light: "#A1CEDC", dark: "#1D3D47"}}
       headerImage={
         <Image
           source={require("@/assets/images/partial-react-logo.png")}
@@ -156,7 +160,7 @@ export default function HomeScreen() {
         <ThemedText>
           <ThemedText type="defaultSemiBold">{username} is log in</ThemedText>{" "}
           <ThemedText type="defaultSemiBold">
-            {Platform.select({ ios: "cmd + d", android: "cmd + m" })}
+            {Platform.select({ios: "cmd + d", android: "cmd + m"})}
           </ThemedText>
           to open developer tools.
         </ThemedText>
