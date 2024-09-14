@@ -3,7 +3,7 @@ import { Auth } from "aws-amplify";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const authApi = createApi({
-  reducerPath: "authApi",
+  reducerPath: "auth",
   baseQuery: fetchBaseQuery(),
   endpoints: (builder) => ({
     signIn: builder.mutation({
@@ -37,7 +37,32 @@ export const authApi = createApi({
         }
       },
     }),
+    currentAuthenticatedUser: builder.query<any, void>({
+      queryFn: async () => {
+        console.log("ww123");
+        try {
+          const user = await Auth.currentAuthenticatedUser();
+          console.log("ww", user);
+          const userData = {
+            username: user.username,
+            attributes: user.attributes, // Include attributes like email, sub, etc.
+          };
+          return { data: userData };
+        } catch (error) {
+          console.log("errr", error);
+          const errorMessage =
+            error instanceof Error
+              ? error.message
+              : "No authenticated user found";
+          return { error: { status: 401, data: errorMessage } };
+        }
+      },
+    }),
   }),
 });
 
-export const { useSignInMutation, useSignOutMutation } = authApi;
+export const {
+  useSignInMutation,
+  useSignOutMutation,
+  useCurrentAuthenticatedUserQuery,
+} = authApi;

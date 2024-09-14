@@ -1,18 +1,12 @@
 import React, { useState } from "react";
 import { TextInput, Button, Snackbar, Text } from "react-native-paper";
-import { useDispatch } from "react-redux";
 
 import {
   useSignInMutation,
   useSignOutMutation,
 } from "@/src/redux/features/authApi";
-import { setUser } from "@/src/redux/features/authSlice";
-import { useAppSelector } from "@/src/redux/store";
 
 export default function HomeScreen() {
-  const dispatch = useDispatch();
-  const auth = useAppSelector((state) => state.auth);
-
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -24,7 +18,7 @@ export default function HomeScreen() {
   const [signOut, { isLoading: isSignOutLoading }] = useSignOutMutation();
 
   const handleSignIn = () => {
-    //here signIn({ username, password }).unwrap();
+    signIn({ username, password }).unwrap();
   };
 
   const handleSignOut = () => {
@@ -51,7 +45,7 @@ export default function HomeScreen() {
       >
         Sign Out
       </Button>
-      <Text>skp {auth.user}</Text>
+      <Text>skp "auth"</Text>
       {isSignInError && (
         <Snackbar visible={true} onDismiss={() => console.log("jjjj")}>
           {"Sign in failed"}

@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Amplify } from "aws-amplify";
+import { Amplify, Auth } from "aws-amplify";
 import { Hub } from "aws-amplify";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
@@ -13,6 +13,7 @@ import {
   DefaultTheme,
   ThemeProvider,
 } from "@react-navigation/native";
+import Root from "./Root";
 import awsconfig from "../src/aws-exports";
 
 Amplify.configure(awsconfig);
@@ -38,10 +39,7 @@ export default function RootLayout() {
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
       <ReduxProvider>
-        <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="+not-found" />
-        </Stack>
+        <Root />
       </ReduxProvider>
     </ThemeProvider>
   );
