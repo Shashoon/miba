@@ -3,11 +3,10 @@ import { TextInput, Button, Snackbar, Text } from "react-native-paper";
 import { useDispatch } from "react-redux";
 
 import {
-  useCurrentAuthenticatedUserQuery,
   useSignInMutation,
   useSignOutMutation,
 } from "@/src/redux/features/authApi";
-import { clearUser } from "@/src/redux/features/userSlice";
+import { setUser } from "@/src/redux/features/userSlice";
 import { useAppSelector } from "@/src/redux/store";
 
 export default function HomeScreen() {
@@ -23,13 +22,19 @@ export default function HomeScreen() {
 
   const [signOut, { isLoading: isSignOutLoading }] = useSignOutMutation();
 
-  const handleSignIn = () => {
-    signIn({ username, password }).unwrap();
+  const handleSignIn = async () => {
+    try {
+      await signIn({ username, password }).unwrap();
+      // Dispatching the user update inside the mutation handler ensures it gets updated in Redux
+      dispatch(setUser(username));
+    } catch (error) {
+      console.error("Sign-in failed:", error);
+    }
   };
 
   const handleSignOut = async () => {
     await signOut().unwrap();
-    dispatch(clearUser());
+    dispatch(setUser(null));
   };
   return (
     <>

@@ -39,28 +39,7 @@ export const authApi = createApi({
       },
       invalidatesTags: ["User"], // Invalidate user tag after sign out
     }),
-    currentAuthenticatedUser: builder.query<any, void>({
-      queryFn: async () => {
-        try {
-          const { attributes, username } =
-            await Auth.currentAuthenticatedUser();
-
-          return { data: { attributes, username } };
-        } catch (error) {
-          const errorMessage =
-            error instanceof Error
-              ? error.message
-              : "No authenticated user found";
-          return { error: { status: 401, data: errorMessage } };
-        }
-      },
-      providesTags: ["User"], // Provide user tag
-    }),
   }),
 });
 
-export const {
-  useSignInMutation,
-  useSignOutMutation,
-  useCurrentAuthenticatedUserQuery,
-} = authApi;
+export const { useSignInMutation, useSignOutMutation } = authApi;
