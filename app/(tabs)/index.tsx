@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { TextInput, Button, Snackbar, Text } from "react-native-paper";
 
 import {
+  useCurrentAuthenticatedUserQuery,
   useSignInMutation,
   useSignOutMutation,
 } from "@/src/redux/features/authApi";
@@ -9,6 +10,7 @@ import {
 export default function HomeScreen() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const { data, error, isLoading } = useCurrentAuthenticatedUserQuery();
 
   const [
     signIn,
@@ -23,9 +25,15 @@ export default function HomeScreen() {
 
   const handleSignOut = () => {
     signOut({}).unwrap();
-    //here dispatch(setUser(userData));
   };
 
+  useEffect(() => {
+    console.log("!987!!Current authenticated user:", data);
+
+    if (data) {
+      console.log("!987!!Current authenticated user:", data);
+    }
+  }, [data]);
   return (
     <>
       <TextInput label="Username" value={username} onChangeText={setUsername} />
