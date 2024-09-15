@@ -1,15 +1,18 @@
+import PrimaryButton from "@/components/buttons/PrimaryButton";
+import PrimaryChip from "@/components/buttons/PrimaryChip";
+import PrimaryTextButton from "@/components/buttons/PrimaryTextButton";
+import PrimaryInputText from "@/components/inputs/PrimaryInputText";
 import { AuthService } from "@/services/authService";
 import { CognitoUser } from "amazon-cognito-identity-js";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
-import { Pressable, StyleSheet, View } from "react-native";
-import { Button, Text, TextInput, useTheme } from "react-native-paper";
+import { StyleSheet, View } from "react-native";
+import { Text, TextInput } from "react-native-paper";
 
 export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
-  const theme = useTheme();
 
   const authService = new AuthService();
 
@@ -23,44 +26,31 @@ export default function Login() {
   return (
     <View style={styles.pageContainer}>
       <View style={styles.formContainer}>
-        <TextInput
+        <PrimaryInputText
           label="Username"
           value={username}
-          right={<TextInput.Icon icon="account" color={"rgb(202, 196, 208)"} />}
-          style={styles.primaryInput}
-          textColor="#1a181b"
-          placeholderTextColor={"rgb(202, 196, 208)"}
-          underlineStyle={styles.inputUnderline}
+          right={<TextInput.Icon icon="account" color={"rgb(157 191 158)"} />}
           onChangeText={setUsername}
         />
-        <TextInput
+
+        <PrimaryInputText
           label="Password"
           value={password}
           secureTextEntry
-          right={<TextInput.Icon icon="key" color={"rgb(202, 196, 208)"} />}
-          style={styles.primaryInput}
-          textColor="#1a181b"
-          placeholderTextColor={"rgb(202, 196, 208)"}
-          underlineStyle={styles.inputUnderline}
+          right={<TextInput.Icon icon="key" color={"rgb(157 191 158)"} />}
           onChangeText={setPassword}
         />
 
         <View style={styles.messageContainer}>
-          <Button mode="contained-tonal" onPress={handleSignIn}>
-            Sign In
-          </Button>
-
-          <View style={styles.messageLabel}>
+          <PrimaryButton onPress={handleSignIn}>Sign In</PrimaryButton>
+          <PrimaryChip icon="information">
             <Text>Don`t have account ? </Text>
-            <Pressable>
-              <Text
-                style={styles.clickableText}
-                onPress={() => router.navigate("/(login)/signup")}
-              >
-                Click here
-              </Text>
-            </Pressable>
-          </View>
+            <PrimaryTextButton
+              onPress={() => router.navigate("/(login)/signup")}
+            >
+              Click Here
+            </PrimaryTextButton>
+          </PrimaryChip>
         </View>
       </View>
     </View>
@@ -80,15 +70,14 @@ const styles = StyleSheet.create({
     gap: 15,
   },
   primaryInput: {
-    backgroundColor: "white",
-    borderRadius: 15,
-    borderTopStartRadius: 15,
-    borderTopEndRadius: 15,
+    borderWidth: 1,
+    borderColor: "#ddddd",
   },
   inputUnderline: {
     display: "none",
   },
   messageContainer: {
+    display: "flex",
     alignItems: "center",
     gap: 10,
   },
@@ -98,5 +87,6 @@ const styles = StyleSheet.create({
   },
   clickableText: {
     color: "rgb(142 130 172)",
+    fontWeight: "600",
   },
 });

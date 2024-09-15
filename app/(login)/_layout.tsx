@@ -11,7 +11,7 @@ const LoginLayout = () => {
         headerTitleStyle: {
           fontSize: 24,
         },
-        headerStyle: {},
+        headerStyle: { backgroundColor: "transparent" },
         tabBarStyle: { display: "none" },
       }}
     >

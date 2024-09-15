@@ -1,9 +1,13 @@
-import {AuthService} from "@/services/authService";
-import {CognitoUser} from "amazon-cognito-identity-js";
-import {useRouter} from "expo-router";
-import React, {useState} from "react";
-import {Alert, Pressable, StyleSheet, View} from "react-native";
-import {Button, Text, TextInput} from "react-native-paper";
+import PrimaryButton from "@/components/buttons/PrimaryButton";
+import PrimaryChip from "@/components/buttons/PrimaryChip";
+import PrimaryTextButton from "@/components/buttons/PrimaryTextButton";
+import PrimaryInputText from "@/components/inputs/PrimaryInputText";
+import { AuthService } from "@/services/authService";
+import { CognitoUser } from "amazon-cognito-identity-js";
+import { useRouter } from "expo-router";
+import React, { useState } from "react";
+import { Alert, Pressable, StyleSheet, View } from "react-native";
+import { Text, TextInput } from "react-native-paper";
 
 export default function Login() {
   const [username, setUsername] = useState("");
@@ -38,83 +42,53 @@ export default function Login() {
   return (
     <View style={styles.pageContainer}>
       <View style={styles.formContainer}>
-        <TextInput
+        <PrimaryInputText
           label="Username"
           value={username}
-          right={<TextInput.Icon icon="account" color={"rgb(202, 196, 208)"} />}
-          style={styles.primaryInput}
-          textColor="#1a181b"
-          placeholderTextColor={"rgb(202, 196, 208)"}
-          underlineStyle={styles.inputUnderline}
+          right={<TextInput.Icon icon="account" color={"rgb(157 191 158)"} />}
           onChangeText={setUsername}
         />
-        <TextInput
+
+        <PrimaryInputText
           label="Password"
           value={password}
           secureTextEntry
-          right={<TextInput.Icon icon="key" color={"rgb(202, 196, 208)"} />}
-          style={styles.primaryInput}
-          textColor="#1a181b"
-          placeholderTextColor={"rgb(202, 196, 208)"}
-          underlineStyle={styles.inputUnderline}
+          right={<TextInput.Icon icon="key" color={"rgb(157 191 158)"} />}
           onChangeText={setPassword}
         />
-        <TextInput
+        <PrimaryInputText
           label="Email"
           value={email}
-          right={<TextInput.Icon icon="email" color={"rgb(202, 196, 208)"} />}
-          style={styles.primaryInput}
-          textColor="#1a181b"
-          placeholderTextColor={"rgb(202, 196, 208)"}
-          underlineStyle={styles.inputUnderline}
+          right={<TextInput.Icon icon="email" color={"rgb(157 191 158)"} />}
           onChangeText={setEmail}
         />
-        <TextInput
+        <PrimaryInputText
           label="Phone Number"
           value={phoneNumber}
-          right={<TextInput.Icon icon="phone" color={"rgb(202, 196, 208)"} />}
-          style={styles.primaryInput}
-          textColor="#1a181b"
-          placeholderTextColor={"red"}
-          underlineStyle={styles.inputUnderline}
+          right={<TextInput.Icon icon="phone" color={"rgb(157 191 158)"} />}
           onChangeText={setPhoneNumber}
         />
       </View>
 
-      <Button mode="contained-tonal" onPress={handleSignUp}>
-        Sign Up
-      </Button>
+      <PrimaryButton onPress={handleSignUp}>Sign Up</PrimaryButton>
 
-      <View style={styles.messageLabel}>
+      <PrimaryChip style={styles.messageLabel}>
         <Text>Already have account ? </Text>
         <Pressable>
-          <Text
-            style={styles.clickableText}
-            onPress={() => router.navigate("/(login)")}
-          >
+          <PrimaryTextButton onPress={() => router.navigate("/(login)")}>
             Click here
-          </Text>
+          </PrimaryTextButton>
         </Pressable>
-      </View>
+      </PrimaryChip>
 
       {/* verification code input*/}
       {showVerification && (
         <View style={styles.verificationContainer}>
           <Text>We sent verification code to your mail.</Text>
-          <TextInput
+          <PrimaryInputText
             label="Enter Code"
             value={verificationCode}
-            right={
-              <TextInput.Affix
-                text="Send"
-                onPress={handleVerification}
-                textStyle={{color: "red"}}
-              />
-            }
-            style={styles.primaryInput}
-            textColor="#1a181b"
-            placeholderTextColor={"red"}
-            underlineStyle={styles.inputUnderline}
+            right={<TextInput.Affix text="Send" onPress={handleVerification} />}
             onChangeText={setVerificationCode}
           />
         </View>
@@ -147,7 +121,8 @@ const styles = StyleSheet.create({
   },
   messageLabel: {
     display: "flex",
-    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
   },
   clickableText: {
     color: "rgb(142 130 172)",
