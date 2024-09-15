@@ -1,46 +1,34 @@
 import { useEffect } from "react";
-import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
+import { Text } from "react-native-paper";
 import "react-native-reanimated";
+import { useDispatch } from "react-redux";
 
-import { useColorScheme } from "@/hooks/useColorScheme";
 import { useCurrentAuthenticatedUserQuery } from "@/src/redux/features/authApi";
+import { clearUser, setUser } from "@/src/redux/features/userSlice";
 import { ReduxProvider } from "@/src/redux/provider";
-import {
-  DarkTheme,
-  DefaultTheme,
-  ThemeProvider,
-} from "@react-navigation/native";
 
 export default function Root() {
-  const colorScheme = useColorScheme();
+  const dispatch = useDispatch();
   const { data, error, isLoading } = useCurrentAuthenticatedUserQuery();
-
+  console.log("mountttttt root");
   useEffect(() => {
-    console.log("!444444987!!Current authenticated user:", data);
+    console.log("2-2-22-2222222222!Current authenticated user:", data);
 
     if (data) {
-      console.log("!4444444444987!!Current authenticated user:", data);
+      console.log("7-7-7-7-", data);
+      dispatch(setUser(data.username));
+    } else if (error) {
+      console.log("ererere", error);
+      // If there is an error, it likely means the user is not authenticated
+      dispatch(clearUser()); // Clear user data from Redux state
     }
-  }, [data]);
-  console.log("22222222222");
+  }); // Add dispatch and error as dependencies
+
   return (
-    <ReduxProvider>
-      <Stack>
-        {data ? (
-          // User is authenticated
-          <>
-            <Stack.Screen name="Home" options={{ headerShown: false }} />
-            {/* Add other authenticated screens */}
-          </>
-        ) : (
-          // User is not authenticated
-          <>
-            <Stack.Screen name="SignIn" options={{ headerShown: false }} />
-            {/* Add other unauthenticated screens */}
-          </>
-        )}
-      </Stack>
-    </ReduxProvider>
+    <Stack>
+      <Stack.Screen name="(tabs)" />
+      <Stack.Screen name="+not-found" />
+    </Stack>
   );
 }

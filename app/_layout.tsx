@@ -13,6 +13,7 @@ import {
   DefaultTheme,
   ThemeProvider,
 } from "@react-navigation/native";
+import Root from "./Root";
 import awsconfig from "../src/aws-exports";
 
 Amplify.configure(awsconfig);
@@ -38,9 +39,7 @@ export default function RootLayout() {
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
       <ReduxProvider>
-        <Stack>
-          <Stack.Screen name="Root" />
-        </Stack>
+        <Root />
       </ReduxProvider>
     </ThemeProvider>
   );

@@ -23,11 +23,12 @@ export const authApi = createApi({
           return { error: { status: 500, data: errorMessage } };
         }
       },
-      invalidatesTags: ["User"], // Invalidate user tag after sign in
+      invalidatesTags: ["User"],
     }),
-    signOut: builder.mutation({
+    signOut: builder.mutation<any, void>({
       async queryFn() {
         try {
+          console.log("signOut");
           await Auth.signOut();
           return { data: "Signed out" };
         } catch (error) {
@@ -40,13 +41,12 @@ export const authApi = createApi({
     }),
     currentAuthenticatedUser: builder.query<any, void>({
       queryFn: async () => {
-        console.log(" f f f ff f ");
         try {
-          const user = await Auth.currentAuthenticatedUser();
-          console.log("u s s s s er,", user);
-          return { data: user };
+          const { attributes, username } =
+            await Auth.currentAuthenticatedUser();
+
+          return { data: { attributes, username } };
         } catch (error) {
-          console.log("errr mes s ss", error);
           const errorMessage =
             error instanceof Error
               ? error.message
