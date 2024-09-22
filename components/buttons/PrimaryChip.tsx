@@ -4,16 +4,16 @@ import { Chip, ChipProps } from "react-native-paper";
 
 const PrimaryChip: React.FC<ChipProps> = ({ children, ...props }) => {
   return (
-    <Chip mode="flat" style={styles.primaryInput} {...props}>
+    <Chip mode="flat" textStyle={styles.chipText} {...props}>
       {children}
     </Chip>
   );
 };
 
 const styles = StyleSheet.create({
-  primaryInput: {
-    // backgroundColor: "#e3e3e3",
-    alignItems: "center",
+  chipText: {
+    color: "black",
+    fontWeight: "500",
   },
 });
 

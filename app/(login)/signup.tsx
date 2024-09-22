@@ -2,6 +2,7 @@ import PrimaryButton from "@/components/buttons/PrimaryButton";
 import PrimaryChip from "@/components/buttons/PrimaryChip";
 import PrimaryTextButton from "@/components/buttons/PrimaryTextButton";
 import PrimaryInputText from "@/components/inputs/PrimaryInputText";
+import PrimaryText from "@/components/texts/PrimaryText";
 import { AuthService } from "@/services/authService";
 import { CognitoUser } from "amazon-cognito-identity-js";
 import { useRouter } from "expo-router";
@@ -45,7 +46,7 @@ export default function Login() {
         <PrimaryInputText
           label="Username"
           value={username}
-          right={<TextInput.Icon icon="account" color={"rgb(157 191 158)"} />}
+          right={<TextInput.Icon icon="account" color={"#E6E8E6"} />}
           onChangeText={setUsername}
         />
 
@@ -53,32 +54,30 @@ export default function Login() {
           label="Password"
           value={password}
           secureTextEntry
-          right={<TextInput.Icon icon="key" color={"rgb(157 191 158)"} />}
+          right={<TextInput.Icon icon="key" color={"#E6E8E6"} />}
           onChangeText={setPassword}
         />
         <PrimaryInputText
           label="Email"
           value={email}
-          right={<TextInput.Icon icon="email" color={"rgb(157 191 158)"} />}
+          right={<TextInput.Icon icon="email" color={"#E6E8E6"} />}
           onChangeText={setEmail}
         />
         <PrimaryInputText
           label="Phone Number"
           value={phoneNumber}
-          right={<TextInput.Icon icon="phone" color={"rgb(157 191 158)"} />}
+          right={<TextInput.Icon icon="phone" color={"#E6E8E6"} />}
           onChangeText={setPhoneNumber}
         />
       </View>
 
       <PrimaryButton onPress={handleSignUp}>Sign Up</PrimaryButton>
 
-      <PrimaryChip style={styles.messageLabel}>
-        <Text>Already have account ? </Text>
-        <Pressable>
-          <PrimaryTextButton onPress={() => router.navigate("/(login)")}>
-            Click here
-          </PrimaryTextButton>
-        </Pressable>
+      <PrimaryChip icon="information">
+        <Text>Already have an account ? </Text>
+        <PrimaryTextButton onPress={() => router.navigate("/(login)/")}>
+          <PrimaryText>Click here</PrimaryText>
+        </PrimaryTextButton>
       </PrimaryChip>
 
       {/* verification code input*/}
@@ -118,11 +117,6 @@ const styles = StyleSheet.create({
   },
   inputUnderline: {
     display: "none",
-  },
-  messageLabel: {
-    display: "flex",
-    alignItems: "center",
-    gap: 10,
   },
   clickableText: {
     color: "rgb(142 130 172)",

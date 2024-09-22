@@ -1,37 +1,119 @@
-import { Tabs } from 'expo-router';
-import React from 'react';
+import { Tabs } from "expo-router";
+import React from "react";
 
-import { TabBarIcon } from '@/components/navigation/TabBarIcon';
-import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
+import { TabBarIcon } from "@/components/navigation/TabBarIcon";
+import { SafeAreaView, StyleSheet } from "react-native";
+import { Header } from "@/components";
+import { Icon, IconButton, PaperProvider } from "react-native-paper";
+import customTheme from "@/assets/theme";
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
-
   return (
-    <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        headerShown: false,
-      }}>
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Home',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="explore"
-        options={{
-          title: 'Explore',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
-          ),
-        }}
-      />
-    </Tabs>
+    <PaperProvider theme={customTheme}>
+      <SafeAreaView style={{ flex: 1 }}>
+        <Tabs
+          screenOptions={{
+            tabBarActiveTintColor: "#F55C3D",
+            headerShown: true,
+            headerBackgroundContainerStyle: {
+              backgroundColor: "red",
+              height: 50,
+            },
+            headerStyle: styles.headerContainer,
+            header: () => <Header />,
+            tabBarStyle: styles.navbarContainer,
+            tabBarItemStyle: styles.navbarItem,
+            tabBarIconStyle: styles.navbarItemImage,
+            tabBarShowLabel: false,
+          }}
+        >
+          <Tabs.Screen
+            name="index"
+            options={{
+              title: "Home",
+              tabBarIcon: ({ color, focused }) => (
+                <TabBarIcon
+                  color={color}
+                  name={focused ? "home" : "home-outline"}
+                />
+              ),
+            }}
+          />
+          <Tabs.Screen
+            name="explore"
+            options={{
+              title: "Explore",
+              tabBarIcon: ({ color, focused }) => (
+                <TabBarIcon
+                  color={color}
+                  name={focused ? "search" : "search-outline"}
+                />
+              ),
+            }}
+          />
+          <Tabs.Screen
+            name="chats"
+            options={{
+              title: "Chats",
+              tabBarIcon: ({ color, focused }) => (
+                <TabBarIcon
+                  color={color}
+                  name={focused ? "chatbubble" : "chatbubble-outline"}
+                />
+              ),
+            }}
+          />
+
+          <Tabs.Screen
+            name="profile"
+            options={{
+              title: "Profile",
+              tabBarIcon: ({ color, focused }) => (
+                <TabBarIcon
+                  color={color}
+                  name={focused ? "person" : "person-outline"}
+                />
+              ),
+            }}
+          />
+        </Tabs>
+      </SafeAreaView>
+    </PaperProvider>
   );
 }
+
+const styles = StyleSheet.create({
+  headerContainer: {
+    backgroundColor: "blue",
+    height: 70,
+  },
+  navbarContainer: {
+    position: "absolute",
+    left: 20,
+    right: 20,
+    display: "flex",
+    justifyContent: "center",
+    borderRadius: 20,
+    marginBottom: 0,
+    paddingBottom: 0,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.29,
+    shadowRadius: 4.65,
+    elevation: 7,
+  },
+  navbarItem: {
+    height: "100%",
+    width: "50%",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  navbarItemImage: {
+    flex: 0,
+    height: 30,
+  },
+});
