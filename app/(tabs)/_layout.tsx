@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
     right: 20,
     display: "flex",
     justifyContent: "center",
-    borderRadius: 20,
+    borderRadius: 40,
     marginBottom: 0,
     paddingBottom: 0,
     shadowColor: "#000",

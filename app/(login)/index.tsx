@@ -50,12 +50,13 @@ export default function Login() {
           <PrimaryButton onPress={handleSignIn}>Sign In</PrimaryButton>
 
           <PrimaryChip icon="information">
-            <Text>Don`t have account ? </Text>
-            <PrimaryTextButton
+            <Text variant="labelSmall">Don`t have an account ? </Text>
+            <Text
+              variant="headlineSmall"
               onPress={() => router.navigate("/(login)/signup")}
             >
-              <PrimaryText>Click here</PrimaryText>
-            </PrimaryTextButton>
+              Click here
+            </Text>
           </PrimaryChip>
         </View>
       </View>

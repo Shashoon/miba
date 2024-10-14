@@ -3,18 +3,25 @@ import React from "react";
 import { StyleSheet, View } from "react-native";
 import { Avatar } from "react-native-paper";
 import { PrimaryIconButton } from "@/components/";
+import { useRouter } from "expo-router";
 
 const Header = () => {
+  const router = useRouter();
+
   return (
     <View style={styles.headerContainer}>
       <View style={styles.iconContainer}>
-        <PrimaryIconButton iconName="chevron-back" size={20} />
+        <PrimaryIconButton
+          iconName="chevron-back"
+          size={20}
+          onPress={() => router.back()}
+        />
       </View>
 
-      <View style={styles.avatarContainer}>
+      <View>
         <Avatar.Image
           size={48}
-          source={require("@/assets/images/profile.jpg")}
+          source={require("@/assets/images/avataaars.png")}
         />
       </View>
     </View>
@@ -34,7 +41,6 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderRadius: 50,
   },
-  avatarContainer: {},
 });
 
 export default Header;

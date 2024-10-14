@@ -74,10 +74,13 @@ export default function Login() {
       <PrimaryButton onPress={handleSignUp}>Sign Up</PrimaryButton>
 
       <PrimaryChip icon="information">
-        <Text>Already have an account ? </Text>
-        <PrimaryTextButton onPress={() => router.navigate("/(login)/")}>
-          <PrimaryText>Click here</PrimaryText>
-        </PrimaryTextButton>
+        <Text variant="labelSmall">Already have an account ? </Text>
+        <Text
+          variant="headlineSmall"
+          onPress={() => router.navigate("/(login)/")}
+        >
+          Click here
+        </Text>
       </PrimaryChip>
 
       {/* verification code input*/}
