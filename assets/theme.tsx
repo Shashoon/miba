@@ -6,11 +6,12 @@ const darkPrimary = "#F66C51";
 const oldPrimary = "#9DBF9E"; // green
 const black = "#1a181b";
 const white = "rgb(255, 255, 255)";
+const darkGray = "#737074";
+const lightGray = "#A2A2A2";
+const gray = "#8e8e8f";
 const blue = "#a8f0ff";
 const green = "#abf1dd";
-const gray = "#8e8e8f";
 const purple = "#CAA8F5";
-const darkGray = "#737074";
 const yellow = "#FBD87F";
 
 const myTheme = {
@@ -24,10 +25,11 @@ const myTheme = {
     primary: primary,
     lightPrimary: lightPrimary,
     darkPrimary: darkPrimary,
+    gray: gray,
+    lightGray: lightGray,
     blue: blue,
     purple: purple,
     green: green,
-    gray: gray,
     white: white,
     black: black,
     darkGray: darkGray,
@@ -69,6 +71,16 @@ const myTheme = {
       fontFamily: "montserratBold",
       fontWeight: "normal" as "normal",
       fontSize: 14,
+    },
+    headlineMedium: {
+      fontFamily: "montserratBold",
+      fontWeight: "normal" as "normal",
+      fontSize: 16,
+    },
+    headlineLarge: {
+      fontFamily: "montserratBold",
+      fontWeight: "normal" as "normal",
+      fontSize: 18,
     },
     titleSmall: {
       fontFamily: "montserratMedium",

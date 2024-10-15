@@ -15,11 +15,6 @@ export default function TabLayout() {
           screenOptions={{
             tabBarActiveTintColor: "#F55C3D",
             headerShown: true,
-            headerBackgroundContainerStyle: {
-              backgroundColor: "red",
-              height: 50,
-            },
-            headerStyle: styles.headerContainer,
             header: () => <Header />,
             tabBarStyle: styles.navbarContainer,
             tabBarItemStyle: styles.navbarItem,
@@ -83,10 +78,6 @@ export default function TabLayout() {
 }
 
 const styles = StyleSheet.create({
-  headerContainer: {
-    backgroundColor: "blue",
-    height: 70,
-  },
   navbarContainer: {
     position: "absolute",
     left: 20,

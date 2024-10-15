@@ -11,7 +11,8 @@ function HomeScreen() {
   return (
     <View style={styles.screenContainer}>
       <PrimaryContainer
-        bgColor={colors.primary as string}
+        bgColor={colors.white as string}
+        // bgColor="transparent"
         style={styles.container}
       >
         <View style={styles.content}>
