@@ -4,9 +4,25 @@ import { StyleSheet, View } from "react-native";
 import PrimaryContainer from "@/components/containers/PrimaryContainer";
 import customTheme from "@/assets/theme";
 import { PrimaryChip, PrimaryIconButton } from "@/components";
+import { Auth } from "aws-amplify";
 
 function HomeScreen() {
   const { colors } = useTheme(customTheme);
+
+  const getUser = async () => {
+    try {
+      const result = await Auth.currentAuthenticatedUser();
+      // const result = await Auth.updateUserAttributes(user, {
+      //   email: "me@anotherdomain.com",
+      //   family_name: "Lastname",
+      // });
+      // console.log(result); // SUCCESS
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  getUser();
 
   return (
     <View style={styles.screenContainer}>

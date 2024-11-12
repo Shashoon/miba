@@ -1,3 +1,4 @@
+import { CognitoUser } from "amazon-cognito-identity-js";
 import { Auth } from "aws-amplify";
 import { Alert } from "react-native";
 

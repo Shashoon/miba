@@ -1,0 +1,16 @@
+projects:
+  miba:
+    schemaPath: amplify/backend/api/miba/build/schema.graphql
+    includes:
+      - src/graphql/**/*.ts
+    excludes:
+      - ./amplify/**
+      - src/mibaAPI.ts
+    extensions:
+      amplify:
+        codeGenTarget: typescript
+        generatedFileName: src/mibaAPI.ts
+        docsFilePath: src/graphql
+        region: us-east-1
+        apiId: null
+        maxDepth: 2

@@ -3,11 +3,13 @@ import { AuthService } from "@/services/authService";
 import { RootState } from "@/services/store/store";
 import { setUser } from "@/services/store/userSlice";
 import { CognitoUser } from "amazon-cognito-identity-js";
+import { Amplify, Auth } from "aws-amplify";
 import { useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { Alert, StyleSheet, View } from "react-native";
 import { Button, Text, TextInput } from "react-native-paper";
 import { useDispatch, useSelector } from "react-redux";
+import awsmobile from "@/src/aws-exports";
 
 export default function Login() {
   const [username, setUsername] = useState("");
@@ -16,6 +18,23 @@ export default function Login() {
   const dispatch = useDispatch();
   const router = useRouter();
   const authService = new AuthService();
+  Amplify.configure(awsmobile);
+
+  useEffect(() => {
+    const checkUserAuth = async () => {
+      try {
+        // Check if there is an authenticated user
+        const res = await authService.GetCurrentUser();
+
+        if (res) router.navigate("/(tabs)/");
+      } catch (error) {
+        // No user is signed in
+        setIsAuthenticated(false);
+      }
+    };
+
+    checkUserAuth();
+  }, []);
 
   useEffect(() => {
     const getUser = async () => {

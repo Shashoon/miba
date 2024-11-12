@@ -1,14 +1,23 @@
 import PrimarySearchBar from "@/components/inputs/PrimarySearchBar";
-import { useState } from "react";
-import { FlatList, ScrollView, StyleSheet, View } from "react-native";
-import { Avatar, Icon, Text } from "react-native-paper";
+import { useEffect, useState } from "react";
+import { FlatList, StyleSheet, View } from "react-native";
+import { Avatar, Text } from "react-native-paper";
 import { usersData } from "@/assets/mockData";
 import myTheme from "@/assets/theme";
 import { PrimaryIconButton } from "@/components";
 
-export default function TabTwoScreen() {
+export default function Explore() {
   const [searchValue, setSearchValue] = useState("");
   const [filteredList, setFilteredList] = useState(usersData);
+
+  useEffect(() => {
+    const getUserChats = async () => {
+      try {
+      } catch (err) {
+        console.log(err);
+      }
+    };
+  }, []);
 
   const handleSearch = (query: string) => {
     setSearchValue(query);

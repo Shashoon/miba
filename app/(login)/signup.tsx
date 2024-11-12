@@ -4,7 +4,10 @@ import PrimaryTextButton from "@/components/buttons/PrimaryTextButton";
 import PrimaryInputText from "@/components/inputs/PrimaryInputText";
 import PrimaryText from "@/components/texts/PrimaryText";
 import { AuthService } from "@/services/authService";
+import { createUser } from "@/src/graphql/mutations";
+import { CreateUserMutationVariables } from "@/src/mibaAPI";
 import { CognitoUser } from "amazon-cognito-identity-js";
+import { API, graphqlOperation } from "aws-amplify";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import { Alert, Pressable, StyleSheet, View } from "react-native";
@@ -21,11 +24,28 @@ export default function Login() {
   const router = useRouter();
   const authService = new AuthService();
 
-  const handleSignUp = () => {
+  const handleSignUp = async () => {
     authService
       .SignUp(username, password, email, phoneNumber)
-      .then((res: CognitoUser | undefined) => {
+      .then(async (res: CognitoUser | undefined) => {
         if (res) setShowVerification(!showVerification);
+
+        try {
+          const input: CreateUserMutationVariables = {
+            input: {
+              first_name: username,
+              last_name: "last",
+              cellphone: phoneNumber,
+              email: email,
+            },
+          };
+
+          const user = await API.graphql(graphqlOperation(createUser, input));
+
+          if (user) console.log(user);
+        } catch (err) {
+          console.log(err);
+        }
       });
     // add user to db after signup
   };
