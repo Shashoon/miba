@@ -1,0 +1,12 @@
+{
+  "resourceName": "s3mibastorage",
+  "bucketName": "miba-storage",
+  "policyUUID": "1c2503c3",
+  "storageAccess": "auth",
+  "guestAccess": [],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ",
+    "DELETE"
+  ]
+}

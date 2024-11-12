@@ -1,17 +1,15 @@
 import PrimaryButton from "@/components/buttons/PrimaryButton";
 import PrimaryChip from "@/components/buttons/PrimaryChip";
-import PrimaryTextButton from "@/components/buttons/PrimaryTextButton";
 import PrimaryInputText from "@/components/inputs/PrimaryInputText";
-import PrimaryText from "@/components/texts/PrimaryText";
-import { AuthService } from "@/services/authService";
-import { createUser } from "@/src/graphql/mutations";
-import { CreateUserMutationVariables } from "@/src/mibaAPI";
-import { CognitoUser } from "amazon-cognito-identity-js";
-import { API, graphqlOperation } from "aws-amplify";
-import { useRouter } from "expo-router";
-import React, { useState } from "react";
-import { Alert, Pressable, StyleSheet, View } from "react-native";
-import { Text, TextInput } from "react-native-paper";
+import {AuthService} from "@/services/authService";
+import {createUser} from "@/src/graphql/mutations";
+import {CreateUserMutationVariables} from "@/src/mibaAPI";
+import {CognitoUser} from "amazon-cognito-identity-js";
+import {API, graphqlOperation} from "aws-amplify";
+import {useRouter} from "expo-router";
+import React, {useState} from "react";
+import {Alert, Pressable, StyleSheet, View} from "react-native";
+import {Text, TextInput} from "react-native-paper";
 
 export default function Login() {
   const [username, setUsername] = useState("");
@@ -25,16 +23,18 @@ export default function Login() {
   const authService = new AuthService();
 
   const handleSignUp = async () => {
+    const tempUserName = email.split("@")[0];
+
     authService
-      .SignUp(username, password, email, phoneNumber)
+      .SignUp(tempUserName, password, email, phoneNumber)
       .then(async (res: CognitoUser | undefined) => {
         if (res) setShowVerification(!showVerification);
 
         try {
           const input: CreateUserMutationVariables = {
             input: {
-              first_name: username,
-              last_name: "last",
+              first_name: username.split(" ")[0],
+              last_name: username.split(" ")[1],
               cellphone: phoneNumber,
               email: email,
             },
@@ -51,8 +51,10 @@ export default function Login() {
   };
 
   const handleVerification = () => {
+    const tempUserName = email.split("@")[0];
+
     authService
-      .checkVerificationCode(username, verificationCode)
+      .checkVerificationCode(tempUserName, verificationCode)
       .then((res: CognitoUser) => {
         if (res) {
           Alert.alert("Success");
@@ -65,7 +67,7 @@ export default function Login() {
     <View style={styles.pageContainer}>
       <View style={styles.formContainer}>
         <PrimaryInputText
-          label="Username"
+          label="Full Name"
           value={username}
           right={<TextInput.Icon icon="account" color={"#E6E8E6"} />}
           onChangeText={setUsername}

@@ -1,5 +1,5 @@
 // the type should update to User model from backend
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 interface User {
   id: string;
@@ -8,11 +8,11 @@ interface User {
 }
 
 interface UserState {
-  user: User | null;
+  user?: User;
 }
 
 const initialState: UserState = {
-  user: null,
+  user: undefined,
 };
 
 const userSlice = createSlice({
@@ -23,10 +23,10 @@ const userSlice = createSlice({
       state.user = action.payload;
     },
     clearUser: (state) => {
-      state.user = null;
+      state.user = undefined;
     },
   },
 });
 
-export const { setUser, clearUser } = userSlice.actions;
+export const {setUser, clearUser} = userSlice.actions;
 export default userSlice.reducer;

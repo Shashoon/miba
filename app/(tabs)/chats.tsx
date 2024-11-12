@@ -1,37 +1,31 @@
 import myTheme from "@/assets/theme";
-import { PrimaryInputText, PrimaryTextButton } from "@/components";
-import { AuthService } from "@/services/authService";
-import { createMessage } from "@/src/graphql/mutations";
-import { getChat, listMessages } from "@/src/graphql/queries";
-import { onCreateMessage } from "@/src/graphql/subscriptions";
+import {PrimaryInputText, PrimaryTextButton} from "@/components";
+import {RootState} from "@/services/store/store";
+import {createMessage} from "@/src/graphql/mutations";
+import {getChat, listMessages} from "@/src/graphql/queries";
+import {onCreateMessage} from "@/src/graphql/subscriptions";
 import {
   CreateMessageInput,
-  GetChatQuery,
   GetChatQueryVariables,
   Message,
 } from "@/src/mibaAPI";
-import { API, Auth, graphqlOperation } from "aws-amplify";
-import React, { useEffect, useState } from "react";
-import { FlatList, StyleSheet, View } from "react-native";
-import { Text, TextInput } from "react-native-paper";
-import { Observable } from "zen-observable-ts";
+import {API, graphqlOperation} from "aws-amplify";
+import React, {useEffect, useState} from "react";
+import {FlatList, StyleSheet, View} from "react-native";
+import {Text, TextInput} from "react-native-paper";
+import {useSelector} from "react-redux";
+import {Observable} from "zen-observable-ts";
 
 const Chats = () => {
   const [currentMessage, setCurrentMessage] = useState("");
   const [messages, setMessages] = useState([] as Message[]);
-  const [currentUser, setCurrentUser] = useState("");
+  const user = useSelector((state: RootState) => state.user.user);
+  const [currentUser, setCurrentUser] = useState(Object);
 
   // chatName need to arrive from the button who created it
   const [chatName, setChatName] = useState("");
-  const authService = new AuthService();
 
   useEffect(() => {
-    authService.GetCurrentUser().then((res) => {
-      if (res) {
-        setCurrentUser(res);
-      }
-    });
-
     // Auth.currentUserInfo();
 
     const getChatName = async () => {
@@ -70,7 +64,7 @@ const Chats = () => {
     const subscription = (
       API.graphql(graphqlOperation(onCreateMessage)) as Observable<object>
     ).subscribe({
-      next: (eventData: { value: { data: { onCreateMessage: Message } } }) => {
+      next: (eventData: {value: {data: {onCreateMessage: Message}}}) => {
         const newMsg = eventData.value.data.onCreateMessage;
         setMessages((prevMessages) => [...prevMessages, newMsg]);
       },
@@ -84,17 +78,22 @@ const Chats = () => {
     // implement better solution than currentMessage
   }, [currentMessage]);
 
+  useEffect(() => {
+    if (user) setCurrentUser(user);
+    console.log(user);
+  }, [user]);
+
   const handleSendMessage = async () => {
     if (!currentMessage.length) return;
 
     const input: CreateMessageInput = {
       content: currentMessage,
-      sender: currentUser.split("@")[0],
+      sender: currentUser ? currentUser.name : "Unknown",
       chatID: "062e79ab-3663-4ea0-8066-cd8300638021",
     };
 
     try {
-      await API.graphql(graphqlOperation(createMessage, { input }));
+      await API.graphql(graphqlOperation(createMessage, {input}));
       setCurrentMessage("");
     } catch (err) {
       console.log(err);
@@ -109,14 +108,16 @@ const Chats = () => {
         <FlatList
           data={messages}
           initialNumToRender={10}
-          renderItem={({ item, index }) => (
+          renderItem={({item, index}) => (
             <View
               key={index}
               style={[
                 styles.messageContainer,
                 {
                   alignSelf:
-                    currentUser === item.sender ? "flex-end" : "flex-start",
+                    currentUser?.name === item.sender
+                      ? "flex-end"
+                      : "flex-start",
                 },
               ]}
             >
@@ -128,10 +129,7 @@ const Chats = () => {
                 }}
               >
                 <Text variant="bodyMedium">{item.content}</Text>
-                <Text
-                  variant="bodySmall"
-                  style={{ color: myTheme.colors.gray }}
-                >
+                <Text variant="bodySmall" style={{color: myTheme.colors.gray}}>
                   {new Date(item.createdAt).toLocaleTimeString()}
                 </Text>
               </View>
