@@ -1,32 +1,63 @@
-import {
-  PrimaryButton,
-  PrimaryChip,
-  PrimaryInputText,
-  PrimaryTextButton,
-} from "@/components";
-import PrimaryText from "@/components/texts/PrimaryText";
+import { PrimaryButton, PrimaryChip, PrimaryInputText } from "@/components";
 import { AuthService } from "@/services/authService";
+import { RootState } from "@/services/store/store";
+import { setUser } from "@/services/store/userSlice";
 import { CognitoUser } from "amazon-cognito-identity-js";
 import { useRouter } from "expo-router";
-import React, { useState } from "react";
-import { Alert, Pressable, StyleSheet, View } from "react-native";
+import React, { useEffect, useState } from "react";
+import { Alert, StyleSheet, View } from "react-native";
 import { Button, Text, TextInput } from "react-native-paper";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const user = useSelector((state: RootState) => state.user.user);
+  const dispatch = useDispatch();
   const router = useRouter();
-
   const authService = new AuthService();
 
-  const handleSignIn = () => {
-    // authService.SignIn(username, password).then((res: CognitoUser) => {
-    //   if (res) {
-    //     console.log("user signed in - ", res.getUsername());
-    //     router.navigate("/(tabs)");
-    //   }
-    // });
-  };
+  useEffect(() => {
+    const getUser = async () => {
+      const res = await authService.GetCurrentUser();
+
+      if (res) {
+        dispatch(
+          setUser({
+            email: res.getUsername(),
+            name: username,
+            id: "",
+          })
+        );
+
+        Alert.alert(res, "is signed in");
+
+        router.navigate("/(tabs)/");
+      }
+    };
+
+    getUser();
+  }, []);
+
+  function handleSignIn() {
+    authService.SignIn(username, password).then((res: CognitoUser) => {
+      try {
+        console.log("user signed in - ", res.getUsername());
+        router.navigate("/(tabs)");
+        dispatch(
+          setUser({
+            email: res.getUsername(),
+            name: username,
+            id: "",
+          })
+        );
+      } catch (err) {
+        console.log(err);
+      }
+
+      console.log(user);
+    });
+  }
 
   return (
     <View style={styles.pageContainer}>

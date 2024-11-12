@@ -7,6 +7,8 @@ import "react-native-reanimated";
 import awsconfig from "../src/aws-exports";
 import { PaperProvider } from "react-native-paper";
 import customTheme from "@/assets/theme";
+import { Provider } from "react-redux";
+import store from "@/services/store/store";
 
 Amplify.configure(awsconfig);
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -31,12 +33,14 @@ export default function RootLayout() {
   }
 
   return (
-    <PaperProvider theme={customTheme}>
-      <Stack initialRouteName="(tabs)">
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="(login)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-    </PaperProvider>
+    <Provider store={store}>
+      <PaperProvider theme={customTheme}>
+        <Stack initialRouteName="(tabs)">
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="(login)" options={{ headerShown: false }} />
+          <Stack.Screen name="+not-found" />
+        </Stack>
+      </PaperProvider>
+    </Provider>
   );
 }

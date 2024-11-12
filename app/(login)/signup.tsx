@@ -27,6 +27,7 @@ export default function Login() {
       .then((res: CognitoUser | undefined) => {
         if (res) setShowVerification(!showVerification);
       });
+    // add user to db after signup
   };
 
   const handleVerification = () => {

@@ -48,10 +48,10 @@ export class AuthService {
   }
 
   // SignOut function for AWS Amplify
-  public async SignOut(setUser: (username: string | null) => void) {
+  public async SignOut(username?: string) {
     try {
       await Auth.signOut();
-      setUser(null); // Reset the user state on sign-out
+      // setUser(null); // Reset the user state on sign-out
       Alert.alert("Success", "User signed out successfully");
     } catch (error) {
       console.log("Error signing out:", error);
@@ -70,5 +70,9 @@ export class AuthService {
     }
   }
 
-  public async GetCurrentUser() {}
+  public async GetCurrentUser() {
+    const res = await Auth.currentAuthenticatedUser();
+
+    return res;
+  }
 }
