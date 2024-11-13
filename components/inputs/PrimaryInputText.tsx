@@ -1,9 +1,9 @@
 import myTheme from "@/assets/theme";
 import React from "react";
-import { StyleSheet } from "react-native";
-import { TextInput, TextInputProps } from "react-native-paper";
+import {StyleSheet} from "react-native";
+import {TextInput, TextInputProps} from "react-native-paper";
 
-const PrimaryInputText: React.FC<TextInputProps> = ({ children, ...props }) => {
+const PrimaryInputText: React.FC<TextInputProps> = ({children, ...props}) => {
   return (
     <TextInput
       style={styles.primaryInput}

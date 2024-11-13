@@ -1,10 +1,10 @@
 import PrimarySearchBar from "@/components/inputs/PrimarySearchBar";
-import { useEffect, useState } from "react";
-import { FlatList, StyleSheet, View } from "react-native";
-import { Avatar, Text } from "react-native-paper";
-import { usersData } from "@/assets/mockData";
+import {useEffect, useState} from "react";
+import {FlatList, StyleSheet, View} from "react-native";
+import {Avatar, Text} from "react-native-paper";
+import {usersData} from "@/assets/mockData";
 import myTheme from "@/assets/theme";
-import { PrimaryIconButton } from "@/components";
+import {PrimaryIconButton} from "@/components";
 
 export default function Explore() {
   const [searchValue, setSearchValue] = useState("");
@@ -47,17 +47,19 @@ export default function Explore() {
         onChangeText={handleSearch}
       />
 
-      <View style={{ height: "75%" }}>
+      <View style={{height: "75%"}}>
         <FlatList
           data={filteredList}
           scrollEnabled={true}
           contentContainerStyle={styles.resultsContainer}
-          renderItem={({ item, index }) => (
+          numColumns={2}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({item, index}) => (
             <View style={styles.itemContainer} key={index}>
               <View style={styles.itemWrapper}>
                 <View>
                   <Avatar.Image
-                    source={{ uri: "https://picsum.photos/200/300" }}
+                    source={{uri: "https://picsum.photos/200/300"}}
                     size={60}
                   />
                 </View>
@@ -72,7 +74,7 @@ export default function Explore() {
                 </View>
               </View>
 
-              <View style={{ alignSelf: "flex-start" }}>
+              <View style={{alignSelf: "flex-start"}}>
                 <PrimaryIconButton iconName="chatbox-outline" />
               </View>
             </View>
@@ -92,21 +94,22 @@ const styles = StyleSheet.create({
     overflow: "scroll",
   },
   resultsContainer: {
-    gap: 20,
+    // gap: 20,
   },
   itemContainer: {
-    flexDirection: "row",
+    flexDirection: "column",
     justifyContent: "space-between",
     alignItems: "center",
     gap: 10,
     padding: 15,
     backgroundColor: myTheme.colors.white,
     borderRadius: 20,
+    width: "50%",
+    margin: 5,
   },
   itemWrapper: {
-    flexDirection: "row",
+    flexDirection: "column",
     alignItems: "center",
-    width: "60%",
     gap: 10,
   },
   itemImage: {

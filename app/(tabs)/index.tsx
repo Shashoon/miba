@@ -1,22 +1,17 @@
 import * as React from "react";
-import { Text, useTheme } from "react-native-paper";
-import { StyleSheet, View } from "react-native";
+import {Text, useTheme} from "react-native-paper";
+import {StyleSheet, View} from "react-native";
 import PrimaryContainer from "@/components/containers/PrimaryContainer";
 import customTheme from "@/assets/theme";
-import { PrimaryChip, PrimaryIconButton } from "@/components";
-import { Auth } from "aws-amplify";
+import {PrimaryChip, PrimaryIconButton} from "@/components";
+import {Auth} from "aws-amplify";
 
 function HomeScreen() {
-  const { colors } = useTheme(customTheme);
+  const {colors} = useTheme(customTheme);
 
   const getUser = async () => {
     try {
       const result = await Auth.currentAuthenticatedUser();
-      // const result = await Auth.updateUserAttributes(user, {
-      //   email: "me@anotherdomain.com",
-      //   family_name: "Lastname",
-      // });
-      // console.log(result); // SUCCESS
     } catch (err) {
       console.log(err);
     }
@@ -28,7 +23,6 @@ function HomeScreen() {
     <View style={styles.screenContainer}>
       <PrimaryContainer
         bgColor={colors.white as string}
-        // bgColor="transparent"
         style={styles.container}
       >
         <View style={styles.content}>
@@ -82,7 +76,7 @@ function HomeScreen() {
           <Text variant="titleLarge">💪</Text>
         </PrimaryContainer>
 
-        <View style={{ gap: 10, width: "50%" }}>
+        <View style={{gap: 10, width: "50%"}}>
           <PrimaryContainer bgColor={colors.lightPrimary as string}>
             <Text variant="titleMedium">Total Jobs</Text>
             <Text variant="bodyLarge">26</Text>
@@ -147,7 +141,7 @@ const styles = StyleSheet.create({
   },
   ratingContainer: {
     justifyContent: "center",
-    height: "100%",
+    height: "80%",
     width: "50%",
     gap: 10,
   },
